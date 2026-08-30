@@ -24,9 +24,6 @@ workspaces as the pages.
 
 ### Manual
 
-The contents list is capped to the viewport and scrolls on its own, so 51 entries never
-dictate the height of the page beside it.
-
 ![Manual](docs/manual.jpg)
 
 ### People
@@ -40,16 +37,6 @@ dictate the height of the page beside it.
 ### Project
 
 ![Project](docs/project.jpg)
-
-## Details
-
-- **One typeface**, JetBrains Mono — the face Omarchy already uses.
-- **The wordmark** is the official `/brand/` SVG, which is a real pixel grid of 211 rects on
-  51px cells. It is expanded to its 738 cells and coloured per letter group, so the gradient
-  steps with the pixels rather than sitting underneath them.
-- **Videos load on click.** Nothing third-party is requested on first paint.
-- **Content is real**, taken from the live site. Every link points at its real destination.
-- Below 900px the tiling gives up: panes stack, and the bar collapses to a hamburger.
 
 ## Running it
 

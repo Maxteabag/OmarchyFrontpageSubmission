@@ -161,13 +161,7 @@ a{color:inherit}
 .workspace.scroll::-webkit-scrollbar-thumb{background:var(--plum);border-radius:11px;border:3px solid transparent;background-clip:content-box}
 .workspace.scroll::-webkit-scrollbar-track{background:transparent}
 
-/* The video column's width is computed from the viewport height, so two 16:9
-   panes fill it exactly with no leftover gap. Deriving it from the grid instead
-   would be circular (width <- height <- row <- width) and overflows. */
-#ws-home{
-  --vid-h:calc((100dvh - var(--bar-h) - var(--gap) * 3) / 2);
-  grid-template-columns:minmax(0,1fr) min(calc(var(--vid-h) * 16 / 9), 52%);
-}
+#ws-home     {grid-template-columns:1.2fr 1fr}
 #ws-manual   {grid-template-columns:minmax(0,300px) minmax(0,1fr)}
 #ws-news     {grid-template-columns:1.35fr 1fr}
 #ws-videos   {grid-template-columns:1fr}
@@ -192,9 +186,10 @@ a{color:inherit}
 
 /* only the fixed home workspace clips its panes to the viewport */
 #ws-home .win{display:flex;flex-direction:column;min-height:0}
-/* videos keep their own 16:9 so no thumbnail is ever cropped */
-.vstack{display:flex;flex-direction:column;gap:var(--gap);height:100%;min-height:0}
-.vstack .win.flush{flex:1 1 0;min-height:0;width:100%}
+/* videos keep their own 16:9 so no thumbnail is ever cropped; the hero fills
+   the column beside them rather than dictating their height */
+.vstack{display:flex;flex-direction:column;gap:var(--gap);min-height:0}
+.vstack .win.flush{aspect-ratio:16/9;flex:none}
 /* the home workspace is fixed-height; scroll rather than clip on short viewports */
 #ws-home .win.hero{overflow-y:auto}
 

@@ -6,8 +6,6 @@ workspaces as the pages.
 
 **[See it live → omarchy-frontpage.pages.dev](https://omarchy-frontpage.pages.dev)**
 
-Press <kbd>1</kbd>–<kbd>7</kbd>, or <kbd>←</kbd>/<kbd>→</kbd> to cycle.
-
 [![Home](docs/home.jpg)](https://omarchy-frontpage.pages.dev)
 
 ## The pages

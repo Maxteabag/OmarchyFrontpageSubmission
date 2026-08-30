@@ -4,8 +4,6 @@ A redesign of [omarchy.org](https://omarchy.org) where the website looks like th
 the distro actually ships: a bar across the top, tiled panes with Hyprland-style gaps, and
 workspaces as the pages.
 
-**[See it live → omarchy-frontpage.pages.dev](https://omarchy-frontpage.pages.dev)**
-
 <img width="1882" height="1012" alt="image" src="https://github.com/user-attachments/assets/69d0116b-7fad-4941-b7f7-54db304b9df3" />
 
 ## The pages
@@ -40,23 +38,6 @@ workspaces as the pages.
 
 ![Project](docs/project.jpg)
 
-## Running it
-
-```sh
-python3 -m http.server 8471      # then open http://localhost:8471
-```
-
-Static files, no build step, no dependencies.
-
-## Building
-
-```sh
-python3 build.py
-```
-
-Inlines the CSS, JS and images into `dist/index.html` — one self-contained file, handy for
-sharing but not for deployment, where per-asset caching is better.
-
 ## Layout
 
 ```
@@ -65,5 +46,4 @@ assets/css/shell.css    tokens, bar, workspaces, panes, content primitives
 assets/js/shell.js      routing, keyboard, mobile drawer, video facades
 assets/img/             wallpaper, video thumbnails, team photos
 docs/                   the screenshots above
-build.py                single-file inliner
 ```

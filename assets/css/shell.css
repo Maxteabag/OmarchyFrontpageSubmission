@@ -196,8 +196,7 @@ a{color:inherit}
 .vstack{display:flex;flex-direction:column;gap:var(--gap);height:100%;min-height:0}
 .vstack .win.flush{flex:1 1 0;min-height:0;width:100%}
 /* the home workspace is fixed-height; scroll rather than clip on short viewports */
-/* centre the block so slack splits top and bottom instead of piling at the top */
-#ws-home .win.hero{overflow-y:auto;justify-content:center}
+#ws-home .win.hero{overflow-y:auto}
 
 /* ==========================================================================
    Type
@@ -205,7 +204,7 @@ a{color:inherit}
 h1,h2,h3,h4{color:var(--glow);margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
 
 /* the wordmark is the hero; the tagline supports it rather than competing */
-.hero .mark{line-height:0}
+.hero .mark{margin-top:auto;line-height:0}
 .hero .bigmark{
   width:100%;max-width:min(560px,76%);height:auto;display:block;
 }

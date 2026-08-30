@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Omarchy — Beautiful, Fun &amp; Opinionated Linux by DHH</title>
+<meta name="description" content="Omarchy is an omakase Linux distribution built on Arch, Hyprland and Quickshell. Everything a modern computer user needs, ready out of the box.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/css/shell.css">
+</head>
+<body>
+
+<!-- ======================= BAR ======================= -->
+<header class="bar" data-bar>
+  <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="bar-panel" data-burger>
+    <span></span><span></span><span></span>
+  </button>
+  <span class="here" data-here aria-hidden="true"></span>
+
+  <div class="bar-panel" id="bar-panel">
+  <nav class="ws" aria-label="Pages">
+    <button type="button" data-go="home"      title="Home (press 1)"      aria-current="true"><span class="n">1</span><span class="nm">Home</span></button>
+    <button type="button" data-go="videos"    title="Videos (press 2)"    aria-current="false"><span class="n">2</span><span class="nm">Videos</span></button>
+    <button type="button" data-go="manual"    title="Manual (press 3)"    aria-current="false"><span class="n">3</span><span class="nm">Manual</span></button>
+    <button type="button" data-go="news"      title="News (press 4)"      aria-current="false"><span class="n">4</span><span class="nm">News</span></button>
+    <button type="button" data-go="people" title="People (press 5)" aria-current="false"><span class="n">5</span><span class="nm">People</span></button>
+    <button type="button" data-go="join" title="Join (press 6)" aria-current="false"><span class="n">6</span><span class="nm">Join</span></button>
+    <button type="button" data-go="project"   title="Project (press 7)"   aria-current="false"><span class="n">7</span><span class="nm">Project</span></button>
+  </nav>
+
+  <div class="links">
+    <a href="https://omarchyplugins.com/">Plugins</a>
+    <a href="https://supply.37signals.com/collections/omarchy">Merch</a>
+    <span class="div"></span>
+    <a class="icon" href="https://github.com/omacom/omarchy" aria-label="Omarchy on GitHub" title="omacom/omarchy on GitHub">
+      <span class="lab">GitHub</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+    <a class="icon" href="https://discord.gg/tXFUdasqhY" aria-label="Omarchy on Discord" title="Discord">
+      <span class="lab">Discord</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    </a>
+    <span class="div"></span>
+    <a class="get" href="https://iso.omarchy.org/omarchy-4.0.1.iso">Download the ISO</a>
+  </div>
+  </div>
+</header>
+
+<main class="workspaces">
+
+<!-- ======================= 1 · HOME ======================= -->
+<section class="workspace on" id="ws-home" data-ws="home">
+
+  <article class="win hero" style="grid-row:span 2">
+    <h1 class="mark"><svg class="bigmark" viewBox="0 0 4131 950" role="img" aria-label="Omarchy" shape-rendering="crispEdges"><g fill="var(--mk-1)"><rect x="102" y="50" width="255" height="50"/><rect x="51" y="100" width="357" height="50"/><rect x="0" y="150" width="153" height="50"/><rect x="306" y="150" width="153" height="50"/><rect x="0" y="200" width="153" height="50"/><rect x="306" y="200" width="153" height="50"/><rect x="0" y="250" width="153" height="50"/><rect x="306" y="250" width="153" height="50"/><rect x="0" y="300" width="153" height="50"/><rect x="306" y="300" width="153" height="50"/><rect x="0" y="350" width="153" height="50"/><rect x="306" y="350" width="153" height="50"/><rect x="0" y="400" width="153" height="50"/><rect x="306" y="400" width="153" height="50"/><rect x="0" y="450" width="153" height="50"/><rect x="306" y="450" width="153" height="50"/><rect x="0" y="500" width="153" height="50"/><rect x="306" y="500" width="153" height="50"/><rect x="0" y="550" width="153" height="50"/><rect x="306" y="550" width="153" height="50"/><rect x="0" y="600" width="153" height="50"/><rect x="306" y="600" width="153" height="50"/><rect x="0" y="650" width="153" height="50"/><rect x="306" y="650" width="153" height="50"/><rect x="0" y="700" width="153" height="50"/><rect x="306" y="700" width="153" height="50"/><rect x="51" y="750" width="357" height="50"/><rect x="102" y="800" width="255" height="50"/></g><g fill="var(--mk-2)"><rect x="867" y="0" width="153" height="50"/><rect x="663" y="50" width="561" height="50"/><rect x="612" y="100" width="663" height="50"/><rect x="561" y="150" width="153" height="50"/><rect x="867" y="150" width="153" height="50"/><rect x="1173" y="150" width="153" height="50"/><rect x="561" y="200" width="153" height="50"/><rect x="867" y="200" width="153" height="50"/><rect x="1173" y="200" width="153" height="50"/><rect x="561" y="250" width="153" height="50"/><rect x="867" y="250" width="153" height="50"/><rect x="1173" y="250" width="153" height="50"/><rect x="561" y="300" width="153" height="50"/><rect x="867" y="300" width="153" height="50"/><rect x="1173" y="300" width="153" height="50"/><rect x="561" y="350" width="153" height="50"/><rect x="867" y="350" width="153" height="50"/><rect x="1173" y="350" width="153" height="50"/><rect x="561" y="400" width="153" height="50"/><rect x="867" y="400" width="153" height="50"/><rect x="1173" y="400" width="153" height="50"/><rect x="561" y="450" width="153" height="50"/><rect x="867" y="450" width="153" height="50"/><rect x="1173" y="450" width="153" height="50"/><rect x="561" y="500" width="153" height="50"/><rect x="867" y="500" width="153" height="50"/><rect x="1173" y="500" width="153" height="50"/><rect x="561" y="550" width="153" height="50"/><rect x="867" y="550" width="153" height="50"/><rect x="1173" y="550" width="153" height="50"/><rect x="561" y="600" width="153" height="50"/><rect x="867" y="600" width="153" height="50"/><rect x="1173" y="600" width="153" height="50"/><rect x="561" y="650" width="153" height="50"/><rect x="867" y="650" width="153" height="50"/><rect x="1173" y="650" width="153" height="50"/><rect x="561" y="700" width="153" height="50"/><rect x="867" y="700" width="153" height="50"/><rect x="1173" y="700" width="153" height="50"/><rect x="612" y="750" width="102" height="50"/><rect x="867" y="750" width="153" height="50"/><rect x="1173" y="750" width="102" height="50"/><rect x="663" y="800" width="51" height="50"/><rect x="867" y="800" width="153" height="50"/><rect x="1173" y="800" width="51" height="50"/></g><g fill="var(--mk-3)"><rect x="1530" y="50" width="357" height="50"/><rect x="1479" y="100" width="408" height="50"/><rect x="1428" y="150" width="153" height="50"/><rect x="1734" y="150" width="153" height="50"/><rect x="1428" y="200" width="153" height="50"/><rect x="1734" y="200" width="153" height="50"/><rect x="1428" y="250" width="153" height="50"/><rect x="1734" y="250" width="153" height="50"/><rect x="1428" y="300" width="153" height="50"/><rect x="1734" y="300" width="153" height="50"/><rect x="1428" y="350" width="153" height="50"/><rect x="1734" y="350" width="153" height="50"/><rect x="1377" y="400" width="510" height="50"/><rect x="1377" y="450" width="510" height="50"/><rect x="1428" y="500" width="153" height="50"/><rect x="1734" y="500" width="153" height="50"/><rect x="1428" y="550" width="153" height="50"/><rect x="1734" y="550" width="153" height="50"/><rect x="1428" y="600" width="153" height="50"/><rect x="1734" y="600" width="153" height="50"/><rect x="1428" y="650" width="153" height="50"/><rect x="1734" y="650" width="153" height="50"/><rect x="1428" y="700" width="153" height="50"/><rect x="1734" y="700" width="153" height="50"/><rect x="1428" y="750" width="153" height="50"/><rect x="1734" y="750" width="102" height="50"/><rect x="1428" y="800" width="153" height="50"/><rect x="1734" y="800" width="51" height="50"/></g><g fill="var(--mk-4)"><rect x="2091" y="50" width="357" height="50"/><rect x="2040" y="100" width="408" height="50"/><rect x="1989" y="150" width="153" height="50"/><rect x="2295" y="150" width="153" height="50"/><rect x="1989" y="200" width="153" height="50"/><rect x="2295" y="200" width="153" height="50"/><rect x="1989" y="250" width="153" height="50"/><rect x="2295" y="250" width="153" height="50"/><rect x="1989" y="300" width="153" height="50"/><rect x="2295" y="300" width="153" height="50"/><rect x="1989" y="350" width="153" height="50"/><rect x="2295" y="350" width="153" height="50"/><rect x="1938" y="400" width="459" height="50"/><rect x="1938" y="450" width="408" height="50"/><rect x="1989" y="500" width="153" height="50"/><rect x="1938" y="550" width="510" height="50"/><rect x="1938" y="600" width="510" height="50"/><rect x="1989" y="650" width="153" height="50"/><rect x="2295" y="650" width="153" height="50"/><rect x="1989" y="700" width="153" height="50"/><rect x="2295" y="700" width="153" height="50"/><rect x="1989" y="750" width="153" height="50"/><rect x="2295" y="750" width="153" height="50"/><rect x="1989" y="800" width="153" height="50"/><rect x="2295" y="800" width="153" height="50"/><rect x="1989" y="850" width="153" height="50"/><rect x="2295" y="850" width="102" height="50"/><rect x="1989" y="900" width="153" height="50"/><rect x="2295" y="900" width="51" height="50"/></g><g fill="var(--mk-5)"><rect x="2652" y="50" width="357" height="50"/><rect x="3213" y="50" width="51" height="50"/><rect x="3417" y="50" width="51" height="50"/><rect x="3774" y="50" width="51" height="50"/><rect x="3978" y="50" width="51" height="50"/><rect x="2601" y="100" width="408" height="50"/><rect x="3162" y="100" width="102" height="50"/><rect x="3417" y="100" width="102" height="50"/><rect x="3723" y="100" width="102" height="50"/><rect x="3978" y="100" width="102" height="50"/><rect x="2550" y="150" width="153" height="50"/><rect x="2856" y="150" width="153" height="50"/><rect x="3111" y="150" width="153" height="50"/><rect x="3417" y="150" width="153" height="50"/><rect x="3672" y="150" width="153" height="50"/><rect x="3978" y="150" width="153" height="50"/><rect x="2550" y="200" width="153" height="50"/><rect x="2856" y="200" width="153" height="50"/><rect x="3111" y="200" width="153" height="50"/><rect x="3417" y="200" width="153" height="50"/><rect x="3672" y="200" width="153" height="50"/><rect x="3978" y="200" width="153" height="50"/><rect x="2550" y="250" width="153" height="50"/><rect x="2856" y="250" width="102" height="50"/><rect x="3111" y="250" width="153" height="50"/><rect x="3417" y="250" width="153" height="50"/><rect x="3672" y="250" width="153" height="50"/><rect x="3978" y="250" width="153" height="50"/><rect x="2550" y="300" width="153" height="50"/><rect x="2856" y="300" width="51" height="50"/><rect x="3111" y="300" width="153" height="50"/><rect x="3417" y="300" width="153" height="50"/><rect x="3672" y="300" width="153" height="50"/><rect x="3978" y="300" width="153" height="50"/><rect x="2550" y="350" width="153" height="50"/><rect x="3111" y="350" width="153" height="50"/><rect x="3417" y="350" width="153" height="50"/><rect x="3672" y="350" width="153" height="50"/><rect x="3978" y="350" width="153" height="50"/><rect x="2550" y="400" width="153" height="50"/><rect x="3060" y="400" width="561" height="50"/><rect x="3672" y="400" width="459" height="50"/><rect x="2550" y="450" width="153" height="50"/><rect x="3009" y="450" width="561" height="50"/><rect x="3672" y="450" width="459" height="50"/><rect x="2550" y="500" width="153" height="50"/><rect x="3111" y="500" width="153" height="50"/><rect x="3417" y="500" width="153" height="50"/><rect x="3978" y="500" width="153" height="50"/><rect x="2550" y="550" width="153" height="50"/><rect x="2856" y="550" width="51" height="50"/><rect x="3111" y="550" width="153" height="50"/><rect x="3417" y="550" width="153" height="50"/><rect x="3723" y="550" width="102" height="50"/><rect x="3978" y="550" width="153" height="50"/><rect x="2550" y="600" width="153" height="50"/><rect x="2856" y="600" width="102" height="50"/><rect x="3111" y="600" width="153" height="50"/><rect x="3417" y="600" width="153" height="50"/><rect x="3672" y="600" width="153" height="50"/><rect x="3978" y="600" width="153" height="50"/><rect x="2550" y="650" width="153" height="50"/><rect x="2856" y="650" width="153" height="50"/><rect x="3111" y="650" width="153" height="50"/><rect x="3417" y="650" width="153" height="50"/><rect x="3672" y="650" width="153" height="50"/><rect x="3978" y="650" width="153" height="50"/><rect x="2550" y="700" width="153" height="50"/><rect x="2856" y="700" width="153" height="50"/><rect x="3111" y="700" width="153" height="50"/><rect x="3417" y="700" width="153" height="50"/><rect x="3672" y="700" width="153" height="50"/><rect x="3978" y="700" width="153" height="50"/><rect x="2550" y="750" width="408" height="50"/><rect x="3111" y="750" width="153" height="50"/><rect x="3417" y="750" width="102" height="50"/><rect x="3723" y="750" width="357" height="50"/><rect x="2550" y="800" width="357" height="50"/><rect x="3111" y="800" width="153" height="50"/><rect x="3417" y="800" width="51" height="50"/><rect x="3774" y="800" width="255" height="50"/></g></svg>
+      </h1>
+    <p class="tagline">Beautiful, Fun &amp; Opinionated Linux by <a href="https://dhh.dk">DHH</a></p>
+
+    <p>
+      The malleable computer for the age of agents. You get total control and can change every
+      aspect of the operating system to your whims, but out-of-the-box it&rsquo;s ready to go
+      without any setup or toil. <a href="https://omarchs.fyi">Be the Omarch!</a>
+    </p>
+    <p class="lead" style="margin-top:16px">
+      An <em>omakase</em> distribution built on <a href="https://archlinux.org">Arch</a>,
+      the tiling window manager <a href="https://hypr.land">Hyprland</a>, and the desktop
+      construction-kit <a href="https://quickshell.org">Quickshell</a> &mdash; shipping with
+      Neovim, Chromium, Obsidian, LibreOffice, Kdenlive and OBS already configured.
+    </p>
+
+    <div class="actions">
+      <a class="btn primary" href="https://iso.omarchy.org/omarchy-4.0.1.iso">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11M7.5 10l4.5 4.5 4.5-4.5M4 20h16"/></svg>
+        Download the ISO
+      </a>
+      <a class="btn" href="https://omarchy.org/manual/">Read the manual</a>
+      <a class="btn" href="https://omarchyplugins.com/">Browse plugins</a>
+    </div>
+    <p class="dl-note">Omarchy 4.0.1 &ldquo;Quattro&rdquo; &middot; x86-64 &middot; MIT licensed</p>
+
+  </article>
+
+  <article class="win flush">
+    <button class="video" type="button" data-video="F7fe9pa8OeE">
+      <img src="assets/img/video-intro.jpg" alt="" loading="lazy">
+      <span class="play"></span>
+      <span class="cap">Omarchy Quattro &mdash; David Heinemeier Hansson</span>
+    </button>
+  </article>
+
+  <article class="win flush">
+    <button class="video" type="button" data-video="9SDkU5VDQEQ">
+      <img src="assets/img/video-networkchuck.jpg" alt="" loading="lazy">
+      <span class="play"></span>
+      <span class="cap">You need to switch to Linux RIGHT NOW!! &mdash; NetworkChuck</span>
+    </button>
+  </article>
+</section>
+
+<!-- ======================= 2 · VIDEOS ======================= -->
+<section class="workspace scroll" id="ws-videos" data-ws="videos">
+
+  <article class="win">
+    <div class="vgrid">
+      <figure class="vitem">
+        <button class="video" type="button" data-video="F7fe9pa8OeE">
+          <img src="assets/img/video-intro.jpg" alt="" loading="lazy">
+          <span class="play"></span>
+        </button>
+        <figcaption>Omarchy Quattro<span>David Heinemeier Hansson</span></figcaption>
+      </figure>
+      <figure class="vitem">
+        <button class="video" type="button" data-video="9SDkU5VDQEQ">
+          <img src="assets/img/video-networkchuck.jpg" alt="" loading="lazy">
+          <span class="play"></span>
+        </button>
+        <figcaption>You need to switch to Linux RIGHT NOW!!<span>NetworkChuck</span></figcaption>
+      </figure>
+      <figure class="vitem">
+        <button class="video" type="button" data-video="qBKMe8AatY0">
+          <img src="assets/img/video-linuxbtw.jpg" alt="" loading="lazy">
+          <span class="play"></span>
+        </button>
+        <figcaption>I Didn&rsquo;t Expect Omarchy 4 to Be This Good<span>LinuxBTW</span></figcaption>
+      </figure>
+      <figure class="vitem">
+        <button class="video" type="button" data-video="5JPYJfN7HY0">
+          <img src="assets/img/video-typecraft.jpg" alt="" loading="lazy">
+          <span class="play"></span>
+        </button>
+        <figcaption>They finally fixed linux<span>typecraft</span></figcaption>
+      </figure>
+      <figure class="vitem">
+        <button class="video" type="button" data-video="KO2T0oET9go">
+          <img src="assets/img/video-alexfinn.jpg" alt="" loading="lazy">
+          <span class="play"></span>
+        </button>
+        <figcaption>If you use AI, switch to Omarchy immediately<span>Alex Finn</span></figcaption>
+      </figure>
+    </div>
+  </article>
+</section>
+
+<!-- ======================= 3 · MANUAL ======================= -->
+<section class="workspace scroll" id="ws-manual" data-ws="manual">
+
+  <article class="win sticky">
+    <nav class="toc">
+      <div class="grp">Getting started</div>
+      <a href="https://omarchy.org/manual/">Welcome to Omarchy!</a>
+      <a href="https://omarchy.org/manual/getting-started/">Getting Started</a>
+      <a href="https://omarchy.org/manual/coming-from-mac-or-windows/">Coming From Mac or Windows</a>
+      <a href="https://omarchy.org/manual/navigation/">Navigation</a>
+      <a href="https://omarchy.org/manual/the-top-bar/">The Top Bar</a>
+      <a href="https://omarchy.org/manual/themes/">Themes</a>
+      <a href="https://omarchy.org/manual/hotkeys/">Hotkeys</a>
+
+      <div class="grp">Daily use</div>
+      <a href="https://omarchy.org/manual/unified-clipboard-history/">Unified Clipboard &amp; History</a>
+      <a href="https://omarchy.org/manual/reminders/">Reminders</a>
+      <a href="https://omarchy.org/manual/notices/">Notices</a>
+      <a href="https://omarchy.org/manual/text-extraction-dictation/">Text Extraction &amp; Dictation</a>
+      <a href="https://omarchy.org/manual/screenshots-recording/">Screenshots &amp; Recording</a>
+      <a href="https://omarchy.org/manual/toggles-idle-screensaver/">Toggles, Idle &amp; the Screensaver</a>
+      <a href="https://omarchy.org/manual/omarchy-cli/">Omarchy CLI</a>
+
+      <div class="grp">Applications</div>
+      <a href="https://omarchy.org/manual/terminal/">Terminal</a>
+      <a href="https://omarchy.org/manual/neovim/">Neovim</a>
+      <a href="https://omarchy.org/manual/ai/">AI</a>
+      <a href="https://omarchy.org/manual/development-tools/">Development Tools</a>
+      <a href="https://omarchy.org/manual/shell-tools/">Shell Tools</a>
+      <a href="https://omarchy.org/manual/shell-functions/">Shell Functions</a>
+      <a href="https://omarchy.org/manual/tuis/">TUIs</a>
+      <a href="https://omarchy.org/manual/guis/">GUIs</a>
+      <a href="https://omarchy.org/manual/browsers/">Browsers</a>
+      <a href="https://omarchy.org/manual/commercial-apps-services/">Commercial apps/services</a>
+      <a href="https://omarchy.org/manual/web-apps/">Web Apps</a>
+      <a href="https://omarchy.org/manual/gaming/">Gaming</a>
+      <a href="https://omarchy.org/manual/filling-out-pdfs/">Filling out PDFs</a>
+      <a href="https://omarchy.org/manual/windows-vm/">Windows VM</a>
+      <a href="https://omarchy.org/manual/other-packages/">Other Packages</a>
+
+      <div class="grp">System</div>
+      <a href="https://omarchy.org/manual/updates/">Updates</a>
+      <a href="https://omarchy.org/manual/dotfiles/">Dotfiles</a>
+      <a href="https://omarchy.org/manual/shell-plugins/">Shell Plugins</a>
+      <a href="https://omarchy.org/manual/monitors/">Monitors</a>
+      <a href="https://omarchy.org/manual/keyboard-mouse-trackpad/">Keyboard, Mouse, Trackpad</a>
+      <a href="https://omarchy.org/manual/networking/">Networking</a>
+      <a href="https://omarchy.org/manual/system-sleep/">System sleep</a>
+      <a href="https://omarchy.org/manual/hardware-authentication/">Hardware authentication</a>
+      <a href="https://omarchy.org/manual/fonts/">Fonts</a>
+      <a href="https://omarchy.org/manual/backgrounds/">Backgrounds</a>
+      <a href="https://omarchy.org/manual/prompt/">Prompt</a>
+      <a href="https://omarchy.org/manual/branding/">Branding</a>
+
+      <div class="grp">Going deeper</div>
+      <a href="https://omarchy.org/manual/common-tweaks/">Common tweaks</a>
+      <a href="https://omarchy.org/manual/making-your-own-theme/">Making your own theme</a>
+      <a href="https://omarchy.org/manual/mac-support/">Mac support</a>
+      <a href="https://omarchy.org/manual/troubleshooting/">Troubleshooting</a>
+      <a href="https://omarchy.org/manual/faq/">FAQ</a>
+      <a href="https://omarchy.org/manual/system-snapshots/">System snapshots</a>
+      <a href="https://omarchy.org/manual/security/">Security</a>
+      <a href="https://omarchy.org/manual/omarchy-on/">Omarchy on&hellip;</a>
+      <a href="https://omarchy.org/manual/dual-boot-install/">Dual Boot Install</a>
+      <a href="https://omarchy.org/manual/unattended-installs/">Unattended Installs</a>
+    </nav>
+  </article>
+
+  <article class="win">
+    <h3 class="sec" style="font-size:24px;margin-bottom:18px">Welcome to Omarchy!</h3>
+    <div class="lead">
+      <p>
+        Omarchy is an <em>omakase</em> Linux distribution based on
+        <a href="https://archlinux.org">Arch</a>, the tiling window manager
+        <a href="https://hypr.land">Hyprland</a>, and the desktop construction-kit
+        <a href="https://quickshell.org">Quickshell</a>. It ships with everything a modern,
+        savvy computer user needs to be productive immediately. From Neovim (btw) to Chromium,
+        Obsidian to LibreOffice, and Kdenlive to OBS Studio. Hell, even a retro Winamp-style
+        music player is there!
+      </p>
+      <p>
+        This isn&rsquo;t just a grab bag of preinstalled packages, though. It&rsquo;s a complete
+        system designed with both aesthetics and productivity in mind. Because a
+        <strong>beautiful</strong> system is a <strong>motivating</strong> system, and
+        productivity has always been downstream from motivation. There&rsquo;s zero bloat here:
+        just everything I use.
+      </p>
+      <p>
+        It&rsquo;s true that developing an eye for the beauty of a TUI-heavy, theme-delighted,
+        tiling-window-managed system like Omarchy can be an acquired taste. But that&rsquo;s why
+        you&rsquo;re here, isn&rsquo;t it? To experience something a little outside of your
+        comfort zone? To embark on a little bit of an adventure into a new way of working with
+        computers? I hope so.
+      </p>
+      <p>
+        Omarchy isn&rsquo;t like Windows and it&rsquo;s not like macOS either. It&rsquo;s not
+        trying to be as familiar as possible. It&rsquo;s trying to be beautiful and
+        <strong>better</strong>. Embrace the Linux-ness of it all. Manually editing some config
+        files, sure. Heavy on the terminal, definitely.
+      </p>
+      <p>Let&rsquo;s get started with the basics.</p>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" href="https://omarchy.org/manual/getting-started/">Getting started</a>
+      <a class="btn" href="https://omarchy.org/manual/coming-from-mac-or-windows/">Coming from Mac or Windows</a>
+      <a class="btn" href="https://omarchy.org/manual/hotkeys/">Hotkeys</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">The three core technologies</h4>
+    <div class="rows">
+      <a href="https://archlinux.org"><span class="k">Arch</span><span class="v">Rolling release, no training wheels</span></a>
+      <a href="https://hypr.land"><span class="k">Hyprland</span><span class="v">The tiling Wayland compositor, by Vaxry</span></a>
+      <a href="https://quickshell.org"><span class="k">Quickshell</span><span class="v">The desktop construction kit, by outfoxxed</span></a>
+    </div>
+  </article>
+</section>
+
+<!-- ======================= 3 · NEWS ======================= -->
+<section class="workspace scroll" id="ws-news" data-ws="news">
+
+  <article class="win">
+    <a class="post" href="https://omarchy.org/news/2026/08/the-first-plugin-competition-winners">
+      <div class="when">DHH · August 28, 2026</div>
+      <div class="ttl">The first plugin competition winners</div>
+      <div class="sum">Radio Atlas, Omagotchi, and AirPods take the podium in the first Omarchy plugin competition.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/introducing-omarchy-air">
+      <div class="when">DHH · August 28, 2026</div>
+      <div class="ttl">Introducing Omarchy AIR</div>
+      <div class="sum">A six-month, funded residency for the artists who make Omarchy beautiful. The first two are HANCORE and OldJobobo.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/100000-downloads-in-a-week">
+      <div class="when">DHH · August 28, 2026</div>
+      <div class="ttl">Omarchy tops 100,000 downloads in a week</div>
+      <div class="sum">A hundred thousand people installed Omarchy in seven days, and we moved nearly a petabyte doing it.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/introducing-the-omarchy-rangers">
+      <div class="when">DHH · August 27, 2026</div>
+      <div class="ttl">Introducing Omarchy Rangers</div>
+      <div class="sum">The first Omarchy Rangers are here to help people find their way, and applications are open.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omacom-foundation-to-be-premier-mise-sponsor">
+      <div class="when">DHH · August 25, 2026</div>
+      <div class="ttl">Omacom Foundation to be premier mise sponsor</div>
+      <div class="sum">Third sponsorship out the door — supporting jdx, who has spent years building the tool that makes managing runtimes a joy.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omarchy-meetups-around-the-world">
+      <div class="when">DHH · August 24, 2026</div>
+      <div class="ttl">Omarchy meetups around the world</div>
+      <div class="sum">Find an Omarchy meetup near you or start one yourself and add it to the global calendar.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omacom-foundation-to-be-premier-quickshell-sponsor">
+      <div class="when">DHH · August 24, 2026</div>
+      <div class="ttl">Omacom Foundation to be premier Quickshell sponsor</div>
+      <div class="sum">The second major sponsorship goes to outfoxxed for his superb work on Quickshell.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omacom-foundation-funding-hits-10m">
+      <div class="when">DHH · August 24, 2026</div>
+      <div class="ttl">Omacom Foundation funding hits $10m</div>
+      <div class="sum">Drew Houston and Peter Steinberger join as Founding Patrons, taking total funding to $10 million.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omacom-foundation-to-be-exclusive-hyprland-sponsor">
+      <div class="when">DHH · August 21, 2026</div>
+      <div class="ttl">Omacom Foundation to be exclusive Hyprland sponsor</div>
+      <div class="sum">Spending the treasure on Vaxry, creator of one of the three core technologies in Omarchy.</div>
+    </a>
+    <a class="post" href="https://omarchy.org/news/2026/08/omacom-foundation-launches-with-8-million">
+      <div class="when">DHH · August 21, 2026</div>
+      <div class="ttl">Omacom Foundation launches with $8 million</div>
+      <div class="sum">It&rsquo;s time to dream big. Omarchy Quattro has given people a chance to experience something new.</div>
+    </a>
+    <div class="actions">
+      <a class="btn" href="https://omarchy.org/news/">All news</a>
+    </div>
+  </article>
+
+  <article class="win sticky">
+    <h4 class="sub">Latest</h4>
+    <div class="meta">August 24, 2026</div>
+    <h3 class="sec" style="font-size:19px;margin:8px 0 12px">Omacom Foundation funding hits $10m</h3>
+    <p class="lead">
+      Drew Houston and Peter Steinberger join the Omacom Foundation as Founding Patrons,
+      taking total funding to $10 million. The money goes back out again: exclusive
+      sponsorship of Hyprland, premier sponsorship of Quickshell and mise.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="https://omarchy.org/news/2026/08/omacom-foundation-funding-hits-10m">Read it</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">Plugins</h4>
+    <p class="lead">
+      Quickshell shipped in Quattro and over a thousand plugins followed in the first week.
+      The first competition crowned Radio Atlas, Omagotchi and AirPods.
+    </p>
+    <div class="tags">
+      <span class="tag on">Radio Atlas</span>
+      <span class="tag on">Omagotchi</span>
+      <span class="tag on">AirPods</span>
+      <span class="tag">1000+ more</span>
+    </div>
+    <div class="actions">
+      <a class="btn" href="https://omarchyplugins.com/">omarchyplugins.com</a>
+    </div>
+  </article>
+</section>
+
+<!-- ======================= 4 · COMMUNITY ======================= -->
+<section class="workspace scroll" id="ws-people" data-ws="people">
+
+  <article class="win">
+    <h4 class="sub">Omarchy Core &mdash; setting the direction</h4>
+    <div class="roster">
+      <div class="person"><img src="assets/img/people/dhh.webp" alt="" loading="lazy"><div><span class="pn">DHH</span><span class="pl">USA / Denmark</span></div></div>
+      <div class="person"><img src="assets/img/people/ryan-hughes.webp" alt="" loading="lazy"><div><span class="pn">Ryan Hughes</span><span class="pl">USA</span></div></div>
+      <div class="person"><img src="assets/img/people/tobi-lutke.webp" alt="" loading="lazy"><div><span class="pn">Tobi Lütke</span><span class="pl">Canada</span></div></div>
+      <div class="person"><img src="assets/img/people/bjarne-overli.webp" alt="" loading="lazy"><div><span class="pn">Bjarne Øverli</span><span class="pl">Norway</span></div></div>
+      <div class="person"><img src="assets/img/people/hancore.webp" alt="" loading="lazy"><div><span class="pn">HANCORE</span><span class="pl">Germany</span></div></div>
+      <div class="person"><img src="assets/img/people/spencer-bull.webp" alt="" loading="lazy"><div><span class="pn">Spencer Bull</span><span class="pl">USA</span></div></div>
+    </div>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">Omarchy Security &mdash; keeping your system safe</h4>
+    <div class="roster">
+      <div class="person"><img src="assets/img/people/adrian-rangel.webp" alt="" loading="lazy"><div><span class="pn">Adrian Rangel</span><span class="pl">Mexico</span></div></div>
+      <div class="person"><img src="assets/img/people/mehmet-ince.webp" alt="" loading="lazy"><div><span class="pn">Mehmet İnce</span><span class="pl">UK</span></div></div>
+      <div class="person"><img src="assets/img/people/erik-melton.webp" alt="" loading="lazy"><div><span class="pn">Erik Melton</span><span class="pl">Norway</span></div></div>
+      <div class="person"><img src="assets/img/people/sayem-chowdhury.webp" alt="" loading="lazy"><div><span class="pn">Sayem Chowdhury</span><span class="pl">Bangladesh</span></div></div>
+      <div class="person"><img src="assets/img/people/sebastian-stange.webp" alt="" loading="lazy"><div><span class="pn">Sebastian Stange</span><span class="pl">Germany</span></div></div>
+    </div>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">Omarchy Rangers &mdash; helping others find their way</h4>
+    <div class="roster">
+      <div class="person"><img src="assets/img/people/mihai.webp" alt="" loading="lazy"><div><span class="pn">Mihai</span><span class="pl">Romania</span></div></div>
+      <div class="person"><img src="assets/img/people/mateo-vaz.webp" alt="" loading="lazy"><div><span class="pn">Mateo Vaz</span><span class="pl">Uruguay</span></div></div>
+      <div class="person"><img src="assets/img/people/nira.webp" alt="" loading="lazy"><div><span class="pn">Nira</span><span class="pl">Nepal</span></div></div>
+    </div>
+  </article>
+
+  <article class="win">
+    <h4 class="sub">Founding Patrons &mdash; $1,000,000 each</h4>
+    <div class="roster">
+      <div class="person"><img src="assets/img/people/p-tobi-lutke.webp" alt="" loading="lazy"><div><span class="pn">Tobi Lütke</span><span class="pl">Shopify</span></div></div>
+      <div class="person"><img src="assets/img/people/p-patrick-collison.webp" alt="" loading="lazy"><div><span class="pn">Patrick Collison</span><span class="pl">Stripe</span></div></div>
+      <div class="person"><img src="assets/img/people/p-michael-dell.webp" alt="" loading="lazy"><div><span class="pn">Michael Dell</span><span class="pl">Dell Technologies</span></div></div>
+      <div class="person"><img src="assets/img/people/p-jack-dorsey.webp" alt="" loading="lazy"><div><span class="pn">Jack Dorsey</span><span class="pl">Block</span></div></div>
+      <div class="person"><img src="assets/img/people/p-matthew-prince.webp" alt="" loading="lazy"><div><span class="pn">Matthew Prince</span><span class="pl">Cloudflare</span></div></div>
+      <div class="person"><img src="assets/img/people/p-brendan-iribe.webp" alt="" loading="lazy"><div><span class="pn">Brendan Iribe</span><span class="pl">Sesame</span></div></div>
+      <div class="person"><img src="assets/img/people/p-jason-fried.webp" alt="" loading="lazy"><div><span class="pn">Jason Fried</span><span class="pl">37signals</span></div></div>
+      <div class="person"><img src="assets/img/people/p-drew-houston.webp" alt="" loading="lazy"><div><span class="pn">Drew Houston</span><span class="pl">Dropbox</span></div></div>
+      <div class="person"><img src="assets/img/people/p-peter-steinberger.webp" alt="" loading="lazy"><div><span class="pn">Peter Steinberger</span><span class="pl">OpenClaw</span></div></div>
+      <div class="person"><img src="assets/img/people/p-dhh.webp" alt="" loading="lazy"><div><span class="pn">DHH</span><span class="pl">37signals</span></div></div>
+    </div>
+    <p class="meta" style="margin-top:18px">Elite capital. Public code.</p>
+  </article>
+
+  <article class="win">
+    <h4 class="sub">Artists in Residence</h4>
+    <p class="lead" style="max-width:78ch">
+      A six-month residency for artists who make Omarchy beautiful. Themes, plugins, and
+      whatever else &mdash; the point is to let creativity flow with the support of the
+      Omacom Foundation. Up to five seats at any one time.
+    </p>
+    <div class="roster" style="margin-top:20px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+      <div class="person"><img src="assets/img/people/hancore.webp" alt="" loading="lazy"><div><span class="pn">HANCORE</span><span class="pl">Solitude, Last Horizon</span></div></div>
+      <div class="person"><span class="ph">OJ</span><div><span class="pn">OldJobobo</span><span class="pl">Lumon, Miasma, Retro 82</span></div></div>
+    </div>
+  </article>
+
+</section>
+
+<!-- ======================= 5 · JOIN ======================= -->
+<section class="workspace scroll" id="ws-join" data-ws="join">
+
+  <article class="win">
+    <h4 class="sub">Find your way in</h4>
+    <div class="cards">
+      <a class="card" href="https://omarchy.org/meetups/">
+        <div class="ct">Meetups</div>
+        <div class="cd">Find one near you, or start your own and add it to the global calendar.</div>
+      </a>
+      <a class="card" href="https://omarchy.org/workstations/">
+        <div class="ct">Workstations</div>
+        <div class="cd">What everyone&rsquo;s actually running it on. The #omarchy-workstations wall.</div>
+      </a>
+      <a class="card" href="https://discord.gg/tXFUdasqhY">
+        <div class="ct">Discord</div>
+        <div class="cd">Where the help happens. Ask anything, get an answer fast.</div>
+      </a>
+      <a class="card" href="mailto:rangers@omarchy.org">
+        <div class="ct">Become a Ranger</div>
+        <div class="cd">Help other people find their way. Applications are open.</div>
+      </a>
+      <a class="card" href="https://omarchy.org/air/">
+        <div class="ct">Apply to AIR</div>
+        <div class="cd">A funded six-month residency for artists and theme makers.</div>
+      </a>
+      <a class="card" href="https://supply.37signals.com/collections/omarchy">
+        <div class="ct">Merch</div>
+        <div class="cd">Wear it. Shipped by 37signals supply.</div>
+      </a>
+    </div>
+  </article>
+
+  <article class="win">
+    <h4 class="sub">Running your own meetup</h4>
+    <p class="lead" style="margin-bottom:20px">
+      Nobody owns a city and there are no invitation-only &ldquo;official&rdquo; events.
+      Start one, add it to the global calendar, and help make computers fun again.
+    </p>
+    <div class="rows">
+      <div class="row"><span class="k">About Omarchy</span><span class="v">Linux, open source, programming, customization, or adjacent hacker culture</span></div>
+      <div class="row"><span class="k">Open to everyone</span><span class="v">No invitation-only events. Capacity limits are obviously fine</span></div>
+      <div class="row"><span class="k">Community-run</span><span class="v">Organizers speak for themselves, not for Omarchy or the Foundation</span></div>
+      <div class="row"><span class="k">No territory</span><span class="v">Nobody owns a city. Anyone may organize anywhere</span></div>
+      <div class="row"><span class="k">No profiteering</span><span class="v">Free is preferred. Cover real costs, don&rsquo;t build an events business</span></div>
+      <div class="row"><span class="k">Sponsors are fine</span><span class="v">Space, pizza and drinks are welcome — disclosed, and never a sales pitch</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="https://omarchy.org/meetups/">Find a meetup</a>
+      <a class="btn" href="https://omarchy.org/meetups/">Start one</a>
+    </div>
+  </article>
+</section>
+
+<!-- ======================= 5 · PROJECT ======================= -->
+<section class="workspace scroll" id="ws-project" data-ws="project">
+
+  <article class="win">
+    <h4 class="sub">Sponsorships</h4>
+    <p class="lead" style="margin-bottom:26px">
+      More money in, more money out. The Omacom Foundation puts its funding straight back
+      into the software Omarchy is built on.
+    </p>
+
+    <h3 class="sec" style="font-size:16px">Hyprland <span style="color:var(--rose);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-left:8px">Exclusive</span></h3>
+    <p class="lead">
+      The tiling Wayland compositor at the heart of Omarchy since day one. The sponsorship lets
+      Vaxry work on it without thinking about commercial development or fundraising, and freed
+      the Hyprperks program to be released for everyone, for free. Three years, with an option
+      for another two.
+    </p>
+
+    <h3 class="sec" style="font-size:16px;margin-top:26px">Quickshell <span style="color:var(--coral);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-left:8px">Premier</span></h3>
+    <p class="lead">
+      The desktop construction kit the Omarchy shell is built on: one long-running process
+      drawing the bar, the menu, the notifications, the OSDs and the lock screen. It shipped in
+      Quattro, and over a thousand plugins followed in the first week. By outfoxxed.
+    </p>
+
+    <h3 class="sec" style="font-size:16px;margin-top:26px">mise <span style="color:var(--coral);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-left:8px">Premier</span></h3>
+    <p class="lead">
+      The tool that manages language runtimes and ships every coding agent in Omarchy. Years of
+      work by jdx that quietly makes managing versions of Ruby, Node and Go a joy.
+    </p>
+
+    <div class="actions">
+      <a class="btn" href="https://omarchy.org/sponsorships/">All sponsorships</a>
+    </div>
+  </article>
+
+  <article class="win sticky">
+    <h4 class="sub">The Foundation</h4>
+    <p class="lead">
+      The Omacom Foundation launched with $8 million and reached $10 million within days.
+      Elite capital, public code &mdash; the money exists to keep the core technologies free
+      and independently maintained.
+    </p>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">Backing</h4>
+    <p class="lead">
+      Incubated at <a href="https://37signals.com">37signals</a>, makers of
+      <a href="https://basecamp.com">Basecamp</a> and <a href="https://hey.com">HEY</a>.
+      Sponsored hosting by <a href="https://cloudflare.com">Cloudflare</a>.
+    </p>
+    <div class="actions">
+      <a class="btn" href="mailto:david@omarchy.org">Partner &amp; patron enquiries</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <h4 class="sub">Security</h4>
+    <p class="lead">
+      Found a vulnerability? Tell the Omarchy Security Team privately so it can be fixed before
+      it&rsquo;s public. Please don&rsquo;t open a GitHub issue or post it on Discord first.
+    </p>
+    <div class="rows" style="margin-top:14px">
+      <div class="row"><span class="k">Component</span><span class="v">Affected part and version</span></div>
+      <div class="row"><span class="k">Reproduction</span><span class="v">Steps to reproduce it</span></div>
+      <div class="row"><span class="k">Impact</span><span class="v">Severity and any proof of concept</span></div>
+      <div class="row"><span class="k">Contact</span><span class="v">How to reach you for follow-up</span></div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="mailto:security@omarchy.org">security@omarchy.org</a>
+      <a class="btn" href="https://omarchy.org/security/">Policy</a>
+    </div>
+  </article>
+</section>
+
+</main>
+
+<script src="assets/js/shell.js"></script>
+</body>
+</html>

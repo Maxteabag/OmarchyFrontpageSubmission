@@ -1,0 +1,563 @@
+/* ==========================================================================
+   Omarchy Shell — a website that behaves like the desktop it ships
+   Palette sampled from themes/tokyo-night/backgrounds/0-swirl-buck.jpg
+   One typeface throughout: JetBrains Mono, the face the distro actually uses.
+   ========================================================================== */
+
+:root{
+  /* Default palette is omarchy.org's own Tokyo Night, verbatim from their
+     root.css. Colours are RGB triplets so translucent surfaces follow a theme
+     swap too — the same pattern their stylesheet uses. */
+  --rgb-void:26,27,38;        /* background-night  #1A1B26 */
+  --rgb-ink:31,33,45;
+  --rgb-buck:36,40,59;        /* background-storm  #24283B */
+  --rgb-plum:65,72,104;       /* terminal-black    #414868 */
+  --rgb-magenta:122,162,247;  /* terminal-blue     #7AA2F7 */
+  --rgb-rose:158,206,106;     /* green             #9ECE6A */
+  --rgb-coral:180,249,248;    /* turquoise         #B4F9F8 */
+  --rgb-blush:125,207,255;    /* terminal-cyan     #7DCFFF */
+  --rgb-glow:192,202,245;     /* terminal-white    #C0CAF5 */
+  --rgb-mute:154,164,205;
+  --rgb-dim:101,110,146;
+  --wall:url('../img/walls/swirl-a-tokyo.jpg');
+  --wall-dim:.58;
+
+  --void:rgb(var(--rgb-void));
+  --ink:rgb(var(--rgb-ink));
+  --buck:rgb(var(--rgb-buck));
+  --plum:rgb(var(--rgb-plum));
+  --magenta:rgb(var(--rgb-magenta));
+  --rose:rgb(var(--rgb-rose));
+  --coral:rgb(var(--rgb-coral));
+  --blush:rgb(var(--rgb-blush));
+  --glow:rgb(var(--rgb-glow));
+  --mute:rgb(var(--rgb-mute));
+  --dim:rgb(var(--rgb-dim));
+
+  --edge:rgba(var(--rgb-blush),.16);
+  --edge-2:rgba(var(--rgb-blush),.32);
+
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+
+  /* wordmark gradient ramp */
+  --mk-1:#41496B;
+  --mk-2:#5A7BC4;
+  --mk-3:#7AA2F7;
+  --mk-4:#7DCFFF;
+  --mk-5:#9ECE6A;
+
+  --gap:14px;
+  --radius:10px;
+  --bar-h:40px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family:var(--mono);
+  font-size:15px;
+  line-height:1.6;
+  color:var(--mute);
+  background:var(--void);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:var(--wall) center/cover no-repeat;
+  z-index:-2;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:rgba(var(--rgb-void),var(--wall-dim));
+  z-index:-1;
+}
+
+a{color:inherit}
+:focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:3px}
+
+/* ==========================================================================
+   Bar — workspaces on the left, real links on the right. Nothing else.
+   ========================================================================== */
+.bar{
+  flex-shrink:0;height:var(--bar-h);
+  display:flex;align-items:center;gap:14px;
+  padding:0 12px;
+  background:rgba(var(--rgb-void),.80);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--edge);
+  font-size:12.5px;
+  position:relative;z-index:20;
+}
+
+.ws{display:flex;gap:4px;flex-shrink:0}
+.ws button{
+  font-family:var(--mono);font-size:12px;
+  display:flex;align-items:center;gap:7px;
+  height:26px;padding:0 11px;
+  border:0;border-radius:6px;
+  background:rgba(var(--rgb-plum),.40);
+  color:var(--dim);cursor:pointer;
+  transition:background .16s,color .16s;
+  white-space:nowrap;
+}
+.ws button .n{font-variant-numeric:tabular-nums;opacity:.7}
+.ws button .nm{letter-spacing:.06em}
+.ws button:hover{background:rgba(var(--rgb-magenta),.5);color:var(--blush)}
+.ws button[aria-current="true"]{
+  background:var(--rose);color:var(--void);
+}
+.ws button[aria-current="true"] .n{opacity:.6}
+
+.bar-panel{display:contents}
+.burger,.here,.links .lab{display:none}
+
+
+.links{margin-left:auto;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.links a{
+  display:flex;align-items:center;gap:7px;
+  height:26px;padding:0 10px;border-radius:6px;
+  color:var(--mute);text-decoration:none;
+  transition:background .16s,color .16s;
+  white-space:nowrap;
+}
+.links a:hover{background:rgba(var(--rgb-magenta),.42);color:var(--glow)}
+.links svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;display:block}
+
+
+.links .icon{padding:0 8px}
+.links .div{width:1px;height:16px;background:var(--edge);margin:0 5px;flex-shrink:0}
+.links .get{background:var(--rose);color:var(--void);letter-spacing:.04em}
+.links .get:hover{background:var(--coral);color:var(--void)}
+
+/* ==========================================================================
+   Workspaces
+   ========================================================================== */
+.workspaces{flex:1;position:relative;overflow:hidden;min-height:0}
+
+.workspace{
+  position:absolute;inset:0;
+  padding:var(--gap);
+  display:grid;gap:var(--gap);
+  visibility:hidden;
+}
+.workspace.on{visibility:visible}
+
+/* content pages scroll as one page — no pane-level scrollbars */
+.workspace.scroll{
+  overflow-y:auto;
+  align-content:start;
+  grid-auto-rows:min-content;
+  scrollbar-width:thin;
+  scrollbar-color:var(--plum) transparent;
+}
+.workspace.scroll::-webkit-scrollbar{width:11px}
+.workspace.scroll::-webkit-scrollbar-thumb{background:var(--plum);border-radius:11px;border:3px solid transparent;background-clip:content-box}
+.workspace.scroll::-webkit-scrollbar-track{background:transparent}
+
+#ws-home     {grid-template-columns:1.45fr 1fr;grid-template-rows:1fr 1fr}
+#ws-manual   {grid-template-columns:minmax(0,300px) minmax(0,1fr)}
+#ws-news     {grid-template-columns:1.35fr 1fr}
+#ws-videos   {grid-template-columns:1fr}
+#ws-people   {grid-template-columns:1fr}
+#ws-join     {grid-template-columns:1fr}
+#ws-project  {grid-template-columns:1.4fr 1fr}
+
+/* ==========================================================================
+   Panes — no title bars, no focus chrome. Just content on the wallpaper.
+   ========================================================================== */
+.win{
+  min-width:0;
+  border-radius:var(--radius);
+  background:rgba(var(--rgb-void),.90);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--edge);
+  padding:26px 28px;
+  overflow:hidden;
+}
+.win.flush{padding:0}
+.win.sticky{position:sticky;top:0}
+
+/* only the fixed home workspace clips its panes to the viewport */
+#ws-home .win{display:flex;flex-direction:column;min-height:0}
+/* the home workspace is fixed-height; scroll rather than clip on short viewports */
+#ws-home .win.hero{overflow-y:auto}
+
+/* ==========================================================================
+   Type
+   ========================================================================== */
+h1,h2,h3,h4{color:var(--glow);margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+
+/* the wordmark is the hero; the tagline supports it rather than competing */
+.hero .mark{margin-top:auto;line-height:0}
+.hero .bigmark{
+  width:100%;max-width:min(560px,76%);height:auto;display:block;
+}
+.hero .tagline{
+  margin:28px 0 0;
+  font-size:clamp(15px,1.45vw,19px);
+  line-height:1.5;letter-spacing:-.015em;
+  color:var(--blush);
+}
+.hero .tagline a{color:var(--glow);text-decoration:none;border-bottom:1px solid var(--edge-2)}
+.hero .tagline a:hover{border-bottom-color:var(--coral)}
+
+.hero p{margin:18px 0 0;font-size:13.5px;line-height:1.8;max-width:64ch}
+.hero p a{color:var(--blush)}
+
+h3.sec{font-size:17px;margin:0 0 14px;letter-spacing:-.02em}
+h4.sub{
+  font-size:11px;font-weight:500;color:var(--magenta);
+  margin:0 0 12px;letter-spacing:.18em;text-transform:uppercase;
+}
+
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+
+.lead{color:var(--mute);font-size:13.5px;line-height:1.8;max-width:82ch}
+.lead a{color:var(--blush)}
+.lead strong{color:var(--blush);font-weight:500}
+
+.meta{font-size:11.5px;color:var(--dim);letter-spacing:.06em}
+
+.sep{height:1px;background:var(--edge);margin:30px 0}
+
+/* ==========================================================================
+   Actions
+   ========================================================================== */
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:11px 18px;border-radius:100px;
+  text-decoration:none;
+  border:1px solid var(--edge-2);
+  color:var(--blush);background:transparent;
+  transition:background .16s,color .16s,transform .16s,border-color .16s;
+}
+.btn:hover{background:rgba(var(--rgb-magenta),.35);color:var(--glow);transform:translateY(-1px)}
+.btn.primary{background:var(--rose);border-color:var(--rose);color:var(--void)}
+.btn.primary:hover{background:var(--coral);border-color:var(--coral)}
+.btn .sz{opacity:.7;letter-spacing:.04em;text-transform:none}
+/* only the primary carries a glyph — it marks a file transfer, not a navigation */
+.btn svg{width:14px;height:14px;flex-shrink:0;display:block;transition:transform .18s}
+.btn.primary:hover svg{transform:translateY(2px)}
+
+/* release detail sits beside the button, never inside its label */
+.dl-note{
+  margin:14px 0 0;font-size:11.5px;color:var(--dim);letter-spacing:.05em;
+}
+
+
+/* ==========================================================================
+   Rows / lists
+   ========================================================================== */
+.rows{display:flex;flex-direction:column}
+.rows a,.rows .row{
+  display:flex;align-items:baseline;gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(var(--rgb-blush),.09);
+  text-decoration:none;color:var(--mute);
+  transition:color .14s,padding-left .14s;
+}
+.rows a:hover{color:var(--glow);padding-left:6px}
+.rows .k{color:var(--coral);flex-shrink:0;min-width:118px;font-size:12.5px}
+.rows .v{font-size:13px;min-width:0}
+
+/* Table of contents — capped to the viewport and scrolled on its own, so a
+   51-entry list never dictates the height of the page beside it. */
+#ws-manual .win.sticky{
+  position:sticky;top:0;
+  max-height:calc(100dvh - var(--bar-h) - var(--gap) * 2);
+  display:flex;flex-direction:column;
+  padding-right:14px;
+}
+#ws-manual .toc{
+  overflow-y:auto;min-height:0;padding-right:12px;
+  scrollbar-width:thin;scrollbar-color:var(--plum) transparent;
+  overscroll-behavior:contain;
+}
+#ws-manual .toc::-webkit-scrollbar{width:9px}
+#ws-manual .toc::-webkit-scrollbar-thumb{background:var(--plum);border-radius:9px;border:3px solid transparent;background-clip:content-box}
+#ws-manual .toc::-webkit-scrollbar-track{background:transparent}
+
+.toc{font-size:13px;display:flex;flex-direction:column}
+.toc a{
+  display:block;padding:6px 0;text-decoration:none;color:var(--mute);
+  transition:color .14s,padding-left .14s;
+}
+.toc a:hover{color:var(--blush);padding-left:5px}
+.toc .grp{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--magenta);margin:20px 0 4px;
+}
+.toc .grp:first-child{margin-top:0}
+
+/* news */
+.post{
+  display:block;padding:15px 0;text-decoration:none;
+  border-bottom:1px solid rgba(var(--rgb-blush),.09);
+  transition:padding-left .16s;
+}
+.post:first-of-type{padding-top:0}
+.post:hover{padding-left:6px}
+.post .when{font-size:11px;color:var(--dim);letter-spacing:.06em}
+.post .ttl{
+  font-size:14.5px;font-weight:500;color:var(--glow);
+  margin:4px 0 5px;line-height:1.4;letter-spacing:-.015em;
+}
+.post:hover .ttl{color:var(--coral)}
+.post .sum{font-size:12.5px;color:var(--mute);line-height:1.65}
+
+/* ==========================================================================
+   People — real photographs, not chips
+   ========================================================================== */
+.roster{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:14px;
+}
+.person{
+  display:flex;align-items:center;gap:11px;
+  min-width:0;
+}
+.person img{
+  width:40px;height:40px;flex-shrink:0;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--buck);
+  border:1px solid var(--edge-2);
+}
+.person .ph{
+  width:40px;height:40px;flex-shrink:0;border-radius:50%;
+  background:rgba(var(--rgb-plum),.5);border:1px solid var(--edge-2);
+  display:grid;place-items:center;
+  font-size:13px;color:var(--blush);
+}
+.person .pn{
+  display:block;font-size:12.5px;color:var(--glow);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.person .pl{
+  display:block;font-size:10.5px;color:var(--dim);letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.person div{min-width:0}
+
+/* People get a page to themselves, so each one is a portrait card rather
+   than a list row: big circular photo, name beneath, room to breathe. */
+#ws-people .win{padding:34px 36px}
+#ws-people .roster{
+  grid-template-columns:repeat(auto-fill,minmax(158px,1fr));
+  gap:30px 22px;
+}
+#ws-people .person{
+  flex-direction:column;text-align:center;gap:0;
+  padding:6px 4px;border-radius:10px;
+  transition:transform .18s;
+}
+#ws-people .person:hover{transform:translateY(-3px)}
+#ws-people .person img,#ws-people .person .ph{
+  width:88px;height:88px;margin:0 auto 14px;
+  border:1px solid rgba(var(--rgb-blush),.22);
+  box-shadow:0 0 0 4px rgba(var(--rgb-void),.6);
+  transition:border-color .18s,box-shadow .18s;
+}
+#ws-people .person:hover img,#ws-people .person:hover .ph{
+  border-color:var(--rose);
+  box-shadow:0 0 0 4px rgba(var(--rgb-rose),.18);
+}
+#ws-people .person .ph{font-size:26px}
+#ws-people .person div{min-width:0;width:100%}
+#ws-people .person .pn{font-size:13.5px;white-space:normal;line-height:1.35}
+#ws-people .person .pl{font-size:11px;margin-top:4px;white-space:normal}
+#ws-people h4.sub{margin-bottom:22px}
+
+
+/* the cards get the same treatment on their own page */
+#ws-join .win{padding:30px 32px}
+#ws-join .cards{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+#ws-join .card{padding:26px}
+#ws-join .card .ct{font-size:15px;margin-bottom:8px}
+#ws-join .card .cd{font-size:12.5px}
+
+/* ==========================================================================
+   Cards — the community directory
+   ========================================================================== */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:var(--gap);
+}
+.card{
+  display:block;text-decoration:none;
+  padding:20px;border-radius:8px;
+  border:1px solid var(--edge);
+  background:rgba(var(--rgb-buck),.34);
+  transition:border-color .16s,background .16s,transform .16s;
+}
+.card:hover{border-color:var(--rose);background:rgba(var(--rgb-magenta),.24);transform:translateY(-2px)}
+.card .ct{font-size:13.5px;color:var(--glow);margin-bottom:6px;font-weight:500}
+.card .cd{font-size:12px;color:var(--mute);line-height:1.6}
+.card:hover .ct{color:var(--coral)}
+
+/* tag pills */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--edge-2);color:var(--blush);
+  padding:4px 10px;border-radius:100px;
+}
+.tag.on{background:var(--magenta);border-color:var(--magenta);color:var(--glow)}
+
+/* ==========================================================================
+   Video
+   ========================================================================== */
+#ws-videos .win{padding:30px 32px}
+.vgrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:26px 22px;
+}
+.vitem{margin:0;display:flex;flex-direction:column;gap:12px}
+.vitem .video{
+  position:relative;aspect-ratio:16/9;flex:none;height:auto;
+  border-radius:8px;border:1px solid var(--edge);
+  transition:border-color .18s,transform .18s;
+}
+.vitem .video:hover{border-color:var(--rose);transform:translateY(-2px)}
+.vitem .video img{opacity:.72}
+.vitem .video:hover img{opacity:.95}
+.vitem .play{width:46px;height:46px;margin:-23px 0 0 -23px}
+.vitem .play::after{border-left-width:13px;border-top-width:8px;border-bottom-width:8px}
+.vitem figcaption{font-size:13px;color:var(--glow);line-height:1.45}
+.vitem figcaption span{display:block;margin-top:4px;font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+
+.video{
+  position:relative;flex:1;min-height:0;
+  border:0;padding:0;margin:0;
+  background:var(--buck);
+  cursor:pointer;overflow:hidden;
+  display:block;width:100%;height:100%;
+  border-radius:var(--radius);
+  font-family:var(--mono);text-align:left;
+}
+.video img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:.62;
+  transition:opacity .25s,transform .5s cubic-bezier(.33,1,.68,1);
+}
+.video:hover img{opacity:.84;transform:scale(1.03)}
+.video .cap{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:34px 18px 16px;
+  background:linear-gradient(180deg,transparent,rgba(var(--rgb-void),.94));
+  font-size:12px;color:var(--glow);letter-spacing:.01em;line-height:1.45;
+}
+.video .play{
+  position:absolute;top:50%;left:50%;
+  width:52px;height:52px;margin:-26px 0 0 -26px;
+  border-radius:50%;background:rgba(var(--rgb-rose),.92);
+  display:grid;place-items:center;
+  transition:transform .22s,background .22s;
+}
+.video:hover .play{transform:scale(1.12);background:var(--coral)}
+.video .play::after{
+  content:'';
+  border-left:15px solid var(--void);
+  border-top:9px solid transparent;border-bottom:9px solid transparent;
+  margin-left:4px;
+}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width:900px){
+  html,body{height:auto;min-height:100%}
+  body{overflow:auto}
+
+  /* bar collapses to brand + burger; everything else moves into a drawer */
+  .bar{
+    position:sticky;top:0;z-index:30;
+    height:var(--bar-h);flex-wrap:nowrap;gap:10px;padding:0 10px;
+  }
+  .burger{
+    display:grid;place-content:center;gap:4px;
+    width:32px;height:32px;margin-left:-4px;
+    background:transparent;border:0;padding:0;cursor:pointer;
+  }
+  .burger span{
+    display:block;width:17px;height:1.5px;border-radius:2px;
+    background:var(--blush);
+    transition:transform .2s cubic-bezier(.33,1,.68,1),opacity .16s;
+  }
+  .bar.open .burger span:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+  .bar.open .burger span:nth-child(2){opacity:0}
+  .bar.open .burger span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+
+
+  /* the pips live in the drawer on mobile, so the bar states where you are */
+  .here{
+    display:block;font-size:13px;color:var(--glow);
+    letter-spacing:.04em;
+  }
+
+  .bar-panel{
+    display:none;
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;gap:10px;padding:10px;
+    /* solid, not translucent — backdrop-filter is unreliable on mobile
+       browsers and the page behind would otherwise read through */
+    background:var(--void);
+    border-bottom:1px solid var(--edge);
+    max-height:calc(100dvh - var(--bar-h));overflow-y:auto;
+  }
+  .bar.open .bar-panel{display:flex}
+
+  .bar-panel .ws{flex-direction:column;gap:2px}
+  .bar-panel .ws button{height:44px;padding:0 13px;border-radius:6px;font-size:13px;gap:11px}
+
+  .bar-panel .links{
+    flex-direction:column;align-items:stretch;gap:2px;margin-left:0;
+    border-top:1px solid var(--edge);padding-top:10px;
+  }
+  /* reserve the icon column on every row so all labels share a left edge */
+  .bar-panel .links a{height:44px;padding:0 13px 0 34px;font-size:13px}
+  .bar-panel .links .icon{padding-left:13px}
+  .bar-panel .links .get{padding:0}
+  .bar-panel .links .div{display:none}
+  .bar-panel .links .lab{display:block;order:2}
+  .bar-panel .links .get{justify-content:center;margin-top:8px;height:46px;letter-spacing:.1em}
+
+  /* tiling gives up: panes stack and the page scrolls normally */
+  .workspaces{overflow:visible}
+  .workspace{
+    position:static;display:none;
+    grid-template-columns:1fr!important;grid-template-rows:none!important;
+    visibility:visible;overflow:visible;
+  }
+  .workspace.on{display:grid}
+  .win{padding:20px}
+  .win.sticky{position:static}
+  #ws-manual .win.sticky{max-height:none;padding-right:20px}
+  #ws-manual .toc{overflow:visible;padding-right:0}
+  #ws-home .win{min-height:0}
+  #ws-home .win.flush{min-height:210px}
+  .hero h1{margin-top:0}
+  .video{min-height:210px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+}
+
+

@@ -6,6 +6,8 @@ workspaces as the pages.
 
 **[See it live → omarchy-frontpage.pages.dev](https://omarchy-frontpage.pages.dev)**
 
+<img width="1882" height="1012" alt="image" src="https://github.com/user-attachments/assets/69d0116b-7fad-4941-b7f7-54db304b9df3" />
+
 [![Home](docs/home.jpg)](https://omarchy-frontpage.pages.dev)
 
 ## The pages

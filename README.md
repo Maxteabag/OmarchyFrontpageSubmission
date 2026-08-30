@@ -37,13 +37,3 @@ workspaces as the pages.
 ### Project
 
 ![Project](docs/project.jpg)
-
-## Layout
-
-```
-index.html              markup and all page content
-assets/css/shell.css    tokens, bar, workspaces, panes, content primitives
-assets/js/shell.js      routing, keyboard, mobile drawer, video facades
-assets/img/             wallpaper, video thumbnails, team photos
-docs/                   the screenshots above
-```
